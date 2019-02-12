@@ -1,13 +1,26 @@
 const mongoose = require('mongoose');
 
-//Connect to mongodb 
-mongoose.connect('mongodb://localhost/testaroo');
+//ES6 Promise 
+mongoose.Promise = global.Promise
+
+//Connect to the db before tests run 
+before(function(done){
+    //Connect to mongodb
+    mongoose.connect('mongodb://localhost/testaroo', {
+      
+  useMongoClient: true,
+    });
 
 mongoose.connection.once('open', function(){
    console.log("Connection has been made! yay!"); 
+   done();
 }).on('error', function(error){
     console.log("connection error:", error);
-})
+  });
+
+    
+});
+
 
 
 
